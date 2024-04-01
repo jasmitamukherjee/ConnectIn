@@ -1,10 +1,82 @@
 import { StyleSheet, Text, View,SafeAreaView, Pressable } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
+import { AuthContext } from '../../AuthContext'
+import { getRegistrationProgress } from '../../registrationUtils'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const EmployerPrefinal = () => {
+  useEffect(() => {
+    console.log(employerData) // Place the console.log here
+  }, [employerData])
+  const {token,setToken}= useContext(AuthContext)
+  useEffect(()=>{
+    if(token){
+      navigation.replace("MainStack",{screen:"Main"})
+    
+    }
+  },[token])
 const navigation =useNavigation()
+useEffect(()=>{
+getAllEmployerData()
+})
+  const [employerData,setEmployerData]= useState()
+  const getAllEmployerData=async ()=>{
+
+    try {
+      const screens = [
+        'UserType',
+        'Name',
+        'Email',
+        'Password',
+       
+        
+        'Gender',
+        'Location',
+       
+       
+        'EmployeePreference',
+        'CompanyOffers',
   
+       
+        'CompanyPhotos',
+      
+  
+        'Prompts',
+        'ShowEmployerPrompts'
+      ];
+let employerData ={}
+for (const screenName of screens) {
+  const screenData = await getRegistrationProgress(screenName);
+  if(screenData){
+    employerData={...employerData,...screenData}
+  }
+}
+setEmployerData(employerData)
+
+
+      
+    } catch (error) {
+      console.log("Error",error)
+      
+    }
+
+  }
+const registerEmployer= async ()=>{
+  try {
+    const response = await axios.post("http://localhost:5000/registerEmployer").then((response)=>{
+      console.log(response)
+      const token = response.data.token;
+      AsyncStorage.setItem("token",token)
+      setToken(token)
+    })
+    
+  } catch (error) 
+  {
+   console.log("Error",error) 
+  }
+}
   return (
     <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
      <View style={{marginTop:90}}>
@@ -42,6 +114,7 @@ const navigation =useNavigation()
         </View>
 
         <Pressable 
+        onPress={registerEmployer}
         // onPress={()=> navigation.navigate("UserType")}
         style={{backgroundColor: '#502b63', padding: 15, marginTop: 'auto'}}>
             <Text style={{fontFamily:"monospace",textAlign:"center",color:"white",fontWeight:600,fontSize:15,fontFamily:"monospace"}}>

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomeScreen from '../screens/Profile/HomeScreen'
@@ -32,7 +32,11 @@ import EPrompts from '../screens/EmployerScreens/EPrompts'
 import EmployerPrefinal from '../screens/EmployerScreens/EmployerPrefinal'
 import EmployeePrefinal from '../screens/EmployeeScreens/EmployeePrefinal'
 import PromptsE from '../screens/EmployeeScreens/PromptsE'
+import { AuthContext } from '../AuthContext'
 const StackNavigator = () => {
+  const {isLoading, token} = useContext(AuthContext);
+  // Ensure token is properly initialized
+  console.log('token:', token);
     const Stack = createNativeStackNavigator()
     const Tab= createBottomTabNavigator()
 
@@ -160,7 +164,7 @@ const AuthStack=()=>{
     }
   return (
     <NavigationContainer>
-        <AuthStack/>
+        {token === null || token === '' ? <AuthStack /> : <MainStack />}
     </NavigationContainer>
   )
 }
