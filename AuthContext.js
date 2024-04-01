@@ -1,16 +1,30 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userType, setUserType] = useState(null);
-
+const [token,setToken] =useState("")
+const [isLoading,setIsLoading] = useState(false)
+const isLoggedIn = async () => {
+  try {
+    setIsLoading(true);
+    const userToken = await AsyncStorage.getItem('token');
+    setToken(userToken);
+    setIsLoading(false);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
   const updateUserType = (type) => {
     setUserType(type);
   };
+  useEffect(() => {
+    isLoggedIn()
+},[token]);
 
   return (
-    <AuthContext.Provider value={{ userType, updateUserType }}>
+    <AuthContext.Provider value={{ userType, updateUserType,token,isLoading,setToken }}>
       {children}
     </AuthContext.Provider>
   );
