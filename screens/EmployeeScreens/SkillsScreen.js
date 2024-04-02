@@ -6,34 +6,34 @@ import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons
 from 'react-native-vector-icons/MaterialCommunityIcons'
-// import { getRegistrationProgress, saveRegistrationProgress } from '../registrationUtils';
+import { getRegistrationProgress, saveRegistrationProgress } from '../../registrationUtils';
 const SkillsScreen = () => {
-  // useEffect(() => {
-  //   getRegistrationProgress("SkillsScreen").then(progressData => {
-  //     if (progressData) {
-  //       setSkillsScreen(progressData.SkillsScreen || []);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    getRegistrationProgress("Skills").then(progressData => {
+      if (progressData) {
+        setSkillsScreen(progressData.skillsScreen || []);
+      }
+    });
+  }, []);
   const navigation=useNavigation()
   const handleNext=()=>{
-    // if(SkillsScreen.length > 0){
-    // saveRegistrationProgress('SkillsScreen', { SkillsScreen });}
+    if(skillsScreen.length > 0){
+    saveRegistrationProgress('Skills', { skillsScreen });}
 
-   
+   console.log(skillsScreen)
     navigation.navigate("EmployeePhotos")}
   
-  const [SkillsScreen, setSkillsScreen] = useState([]);
+  const [skillsScreen, setSkillsScreen] = useState([]);
 
   const chooseOption = (option) => {
 
    
   
     
-    if (SkillsScreen.includes(option)) {
-      setSkillsScreen(SkillsScreen.filter((selectedOption) => selectedOption !== option));
+    if (skillsScreen.includes(option)) {
+      setSkillsScreen(skillsScreen.filter((selectedOption) => selectedOption !== option));
     } else {
-      setSkillsScreen([...SkillsScreen, option]);
+      setSkillsScreen([...skillsScreen, option]);
     }
   };
 
@@ -106,7 +106,7 @@ const SkillsScreen = () => {
                       <FontAwesome
                         name="circle"
                         size={26}
-                        color={SkillsScreen.includes(subOption) ? '#502b63' : '#F0F0F0'}
+                        color={skillsScreen.includes(subOption) ? '#502b63' : '#F0F0F0'}
                       />
                       <Text style={{ fontFamily:"monospace",fontWeight: '500', fontSize: 15, color: 'black', marginLeft: 8 }}>{subOption}</Text>
                     </View>

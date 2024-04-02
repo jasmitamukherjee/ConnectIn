@@ -7,6 +7,7 @@ from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../AuthContext';
 import { getRegistrationProgress, saveRegistrationProgress } from '../registrationUtils';
+
 const UserType = () => {
 
   useEffect(()=>{
@@ -19,13 +20,13 @@ const UserType = () => {
   },[])
   const { updateUserType } = useContext(AuthContext);
   const navigation=useNavigation()
-  const [selectedType, setSelectedType] = useState(null);
+  const [userType, setSelectedType] = useState(null);
   const handleNext=()=>{
 
-    updateUserType(selectedType)
-  // console.log(selectedType)
-if(selectedType.trim() !== ''){
-  saveRegistrationProgress('UserType',{selectedType})
+    updateUserType(userType)
+  // console.log(userType)
+if(userType.trim() !== ''){
+  saveRegistrationProgress('UserType',{userType})
 }
    
     navigation.navigate("Name")}
@@ -35,7 +36,7 @@ if(selectedType.trim() !== ''){
   ];
 
   const renderItem = ({ item }) => {
-    const isSelected = selectedType === item.id;
+    const isSelected = userType === item.id;
 
     return (
       <TouchableOpacity

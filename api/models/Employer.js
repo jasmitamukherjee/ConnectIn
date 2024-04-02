@@ -32,7 +32,7 @@ const employerSchema = new Schema({
          required: true,
       },
 
-      employeePreferences:[
+      employeePreference:[
         {
             type : String
         }

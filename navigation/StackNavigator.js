@@ -2,17 +2,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import HomeScreen from '../screens/Profile/HomeScreen'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import LikesScreen from '../screens/Profile/LikesScreen'
 import { NavigationContainer } from '@react-navigation/native'
-import ChatScreen from '../screens/Profile/ChatScreen'
-import ProfileScreen from '../screens/Profile/ProfileScreen'
+
 import BasicInfo from '../screens/BasicInfo'
 import UserType from '../screens/UserType'
 import NameScreen from '../screens/CommonScreens/NameScreen'
@@ -23,7 +20,6 @@ import LocationScreen from '../screens/CommonScreens/LocationScreen'
 import JobPreferenceScreen from '../screens/EmployeeScreens/JobPreferenceScreen'
 import SkillsScreen from '../screens/EmployeeScreens/SkillsScreen'
 import EmployeePhotosScreen from '../screens/EmployeeScreens/EmployeePhotosScreen'
-import PrefinalScreen from '../screens/CommonScreens/PrefinalScreen'
 import Prompts from '../screens/CommonScreens/Prompts'
 import EmployeePreferenceScreen from '../screens/EmployerScreens/EmployeePreferenceScreen'
 import CompanyOffersScreen from '../screens/EmployerScreens/CompanyOffersScreen'
@@ -33,84 +29,164 @@ import EmployerPrefinal from '../screens/EmployerScreens/EmployerPrefinal'
 import EmployeePrefinal from '../screens/EmployeeScreens/EmployeePrefinal'
 import PromptsE from '../screens/EmployeeScreens/PromptsE'
 import { AuthContext } from '../AuthContext'
+import EmployeeHome from '../screens/Profile/Employee/EmployeeHome'
+import EmployeeLikes from '../screens/Profile/Employee/EmployeeLikes'
+import EmployeeChat from '../screens/Profile/Employee/EmployeeChat'
+import EmployeeProfile from '../screens/Profile/Employee/EmployeeProfile'
+import EmployerHome from '../screens/Profile/Employer/EmployerHome'
+import EmployerLikes from '../screens/Profile/Employer/EmployerLikes'
+import EmployerChat from '../screens/Profile/Employer/EmployerChat'
+import EmployerProfile from '../screens/Profile/Employer/EmployerProfile'
 const StackNavigator = () => {
-  const {isLoading, token} = useContext(AuthContext);
+  const {isLoading, token,userType,updateUserType} = useContext(AuthContext);
   // Ensure token is properly initialized
-  console.log('token:', token);
     const Stack = createNativeStackNavigator()
     const Tab= createBottomTabNavigator()
+function BottomTabsEmployee(){
+  return(
+    <Tab.Navigator screenOptions={() => ({
+        tabBarShowLabel: false,
+      })}>
+        <Tab.Screen name="Home" component={EmployeeHome}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <MaterialCommunityIcons name="alpha" size={39} color="white" />
+      ) : (
+        <MaterialCommunityIcons
+          name="alpha"
+          size={39}
+          color="#989898"
+        />
+      ),
+  }}/>
 
-    function BottomTabs(){
-        return(
-            <Tab.Navigator screenOptions={() => ({
-                tabBarShowLabel: false,
-              })}>
-                <Tab.Screen name="Home" component={HomeScreen}  options={{
-            tabBarStyle: {backgroundColor: '#101010'},
-            tabBarLabelStyle: {color: '#008E97'},
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialCommunityIcons name="alpha" size={39} color="white" />
-              ) : (
-                <MaterialCommunityIcons
-                  name="alpha"
-                  size={39}
-                  color="#989898"
-                />
-              ),
-          }}/>
+<Tab.Screen name="Likes" component={EmployeeLikes}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <Foundation name="like" size={38} color="white" />
+      ) : (
+        <Foundation
+          name="like"
+          size={38}
+          color="#989898"
+        />
+      ),
+  }}/>
 
-<Tab.Screen name="Likes" component={LikesScreen}  options={{
-            tabBarStyle: {backgroundColor: '#101010'},
-            tabBarLabelStyle: {color: '#008E97'},
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <Foundation name="like" size={38} color="white" />
-              ) : (
-                <Foundation
-                  name="like"
-                  size={38}
-                  color="#989898"
-                />
-              ),
-          }}/>
+<Tab.Screen name="Chat" component={EmployeeChat}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <MaterialIcons name="chat-bubble" size={30} color="white" />
+      ) : (
+        <MaterialIcons
+          name="chat-bubble"
+          size={30}
+          color="#989898"
+        />
+      ),
+  }}/>
 
-<Tab.Screen name="Chat" component={ChatScreen}  options={{
-            tabBarStyle: {backgroundColor: '#101010'},
-            tabBarLabelStyle: {color: '#008E97'},
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <MaterialIcons name="chat-bubble" size={30} color="white" />
-              ) : (
-                <MaterialIcons
-                  name="chat-bubble"
-                  size={30}
-                  color="#989898"
-                />
-              ),
-          }}/>
+<Tab.Screen name="Profile" component={EmployeeProfile}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <Ionicons name="person-circle-outline" size={35} color="white" />
+      ) : (
+        <Ionicons
+          name="person-circle-outline"
+          size={35}
+          color="#989898"
+        />
+      ),
+  }}/>
+    </Tab.Navigator>
+)
 
-<Tab.Screen name="Profile" component={ProfileScreen}  options={{
-            tabBarStyle: {backgroundColor: '#101010'},
-            tabBarLabelStyle: {color: '#008E97'},
-            headerShown: false,
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <Ionicons name="person-circle-outline" size={35} color="white" />
-              ) : (
-                <Ionicons
-                  name="person-circle-outline"
-                  size={35}
-                  color="#989898"
-                />
-              ),
-          }}/>
-            </Tab.Navigator>
-        )
-    }
+}
+
+function BottomTabsEmployer(){
+  return(
+    <Tab.Navigator screenOptions={() => ({
+        tabBarShowLabel: false,
+      })}>
+        <Tab.Screen name="Home" component={EmployerHome}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <MaterialCommunityIcons name="alpha" size={39} color="white" />
+      ) : (
+        <MaterialCommunityIcons
+          name="alpha"
+          size={39}
+          color="#989898"
+        />
+      ),
+  }}/>
+
+<Tab.Screen name="Likes" component={EmployerLikes}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <Foundation name="like" size={38} color="white" />
+      ) : (
+        <Foundation
+          name="like"
+          size={38}
+          color="#989898"
+        />
+      ),
+  }}/>
+
+<Tab.Screen name="Chat" component={EmployerChat}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <MaterialIcons name="chat-bubble" size={30} color="white" />
+      ) : (
+        <MaterialIcons
+          name="chat-bubble"
+          size={30}
+          color="#989898"
+        />
+      ),
+  }}/>
+
+<Tab.Screen name="Profile" component={EmployerProfile}  options={{
+    tabBarStyle: {backgroundColor: '#101010'},
+    tabBarLabelStyle: {color: '#008E97'},
+    headerShown: false,
+    tabBarIcon: ({focused}) =>
+      focused ? (
+        <Ionicons name="person-circle-outline" size={35} color="white" />
+      ) : (
+        <Ionicons
+          name="person-circle-outline"
+          size={35}
+          color="#989898"
+        />
+      ),
+  }}/>
+    </Tab.Navigator>
+)
+}
+
 const AuthStack=()=>{
 
     return(
@@ -158,13 +234,24 @@ const AuthStack=()=>{
     function MainStack(){
         return(
             <Stack.Navigator>
-                <Stack.Screen name="Main" component={BottomTabs} options={{headerShown:false}}/>
+              {userType === 'employee' ? (
+                <>
+                                <Stack.Screen name="Main" component={BottomTabsEmployee} options={{headerShown:false}}/>
+
+                                </>
+              ):(
+                <>
+                <Stack.Screen name="Main" component={BottomTabsEmployer} options={{headerShown:false}}/>
+                </>
+              )}
+
             </Stack.Navigator>
         )
     }
   return (
     <NavigationContainer>
         {token === null || token === '' ? <AuthStack /> : <MainStack />}
+    {/* <AuthStack/> */}
     </NavigationContainer>
   )
 }

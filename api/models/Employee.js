@@ -32,12 +32,12 @@ const employeeSchema = new Schema({
          required: true,
       },
 
-      jobPreferences:[
+      lookingFor:[
         {
             type : String
         }
       ],
-      skills:[{
+      skillsScreen:[{
 
         type:String
 

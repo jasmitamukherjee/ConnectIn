@@ -11,28 +11,28 @@ const EmployeePreference = () => {
   useEffect(() => {
     getRegistrationProgress("EmployeePreference").then(progressData => {
       if (progressData) {
-        setEmployeePreferenceScreen(progressData.employeePreferenceScreen || []);
+        setEmployeePreference(progressData.employeePreference || []);
       }
     });
   }, []);
   const navigation=useNavigation()
   const handleNext=()=>{
-    if(employeePreferenceScreen.length > 0){
-    saveRegistrationProgress('EmployeePreference', { employeePreferenceScreen });}
+    if(employeePreference.length > 0){
+    saveRegistrationProgress('EmployeePreference', { employeePreference });}
 
     navigation.navigate("CompanyOffers")}
   
-  const [employeePreferenceScreen, setEmployeePreferenceScreen] = useState([]);
+  const [employeePreference, setEmployeePreference] = useState([]);
 
   const chooseOption = (option) => {
 
    
   
     
-    if (employeePreferenceScreen.includes(option)) {
-      setEmployeePreferenceScreen(employeePreferenceScreen.filter((selectedOption) => selectedOption !== option));
+    if (employeePreference.includes(option)) {
+      setEmployeePreference(employeePreference.filter((selectedOption) => selectedOption !== option));
     } else {
-      setEmployeePreferenceScreen([...employeePreferenceScreen, option]);
+      setEmployeePreference([...employeePreference, option]);
     }
   };
 
@@ -109,7 +109,7 @@ const EmployeePreference = () => {
                       <FontAwesome
                         name="circle"
                         size={26}
-                        color={employeePreferenceScreen.includes(subOption) ? '#502b63' : '#F0F0F0'}
+                        color={employeePreference.includes(subOption) ? '#502b63' : '#F0F0F0'}
                       />
                       <Text style={{ fontFamily:"monospace",fontWeight: '500', fontSize: 15, color: 'black', marginLeft: 8 }}>{subOption}</Text>
                     </View>

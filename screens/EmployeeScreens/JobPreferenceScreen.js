@@ -6,19 +6,19 @@ import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons
 from 'react-native-vector-icons/MaterialCommunityIcons'
-// import { getRegistrationProgress, saveRegistrationProgress } from '../registrationUtils';
+import { getRegistrationProgress, saveRegistrationProgress } from '../../registrationUtils';
 const JobPreferenceScreen = () => {
-  // useEffect(() => {
-  //   getRegistrationProgress("JobPreferenceScreen").then(progressData => {
-  //     if (progressData) {
-  //       setLookingFor(progressData.lookingFor || []);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    getRegistrationProgress("JobPreference").then(progressData => {
+      if (progressData) {
+        setLookingFor(progressData.lookingFor || []);
+      }
+    });
+  }, []);
   const navigation=useNavigation()
   const handleNext=()=>{
-    // if(lookingFor.length > 0){
-    // saveRegistrationProgress('JobPreferenceScreen', { lookingFor });}
+    if(lookingFor.length > 0){
+    saveRegistrationProgress('JobPreference', { lookingFor });}
 
    
     navigation.navigate("Skills")}

@@ -2,8 +2,7 @@ import { StyleSheet, Text, View ,SafeAreaView,Image,TextInput} from 'react-nativ
 import { TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
-import AntDesign
-from 'react-native-vector-icons/AntDesign'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useNavigation } from '@react-navigation/native'
 import MaterialCommunityIcons
 from 'react-native-vector-icons/MaterialCommunityIcons'

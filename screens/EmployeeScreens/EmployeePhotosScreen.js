@@ -1,5 +1,4 @@
 
-
 import {
   StyleSheet,
   Text,
@@ -16,10 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useNavigation} from '@react-navigation/native';
-// import {
-//   getRegistrationProgress,
-//   saveRegistrationProgress,
-// } from '../registrationUtils';
+import { getRegistrationProgress, saveRegistrationProgress } from '../../registrationUtils';
 
 const PhotoScreen = () => {
   const navigation = useNavigation();
@@ -37,18 +33,18 @@ const PhotoScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // Fetch the saved image URLs from AsyncStorage
-  //   getRegistrationProgress('Photos').then(progressData => {
-  //     if (progressData && progressData.imageUrls) {
-  //       setImageUrls(progressData.imageUrls);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    // Fetch the saved image URLs from AsyncStorage
+    getRegistrationProgress('EmployeePhotos').then(progressData => {
+      if (progressData && progressData.imageUrls) {
+        setImageUrls(progressData.imageUrls);
+      }
+    });
+  }, []);
 
   const handleNext = () => {
     // Save the current progress data including the image URLs
-    // saveRegistrationProgress('Photos', {imageUrls});
+    saveRegistrationProgress('EmployeePhotos', {imageUrls});
 
     // Navigate to the next screen
     navigation.navigate('Prompts'); // Navigate to the appropriate screen

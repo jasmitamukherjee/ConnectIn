@@ -2,8 +2,7 @@ import { StyleSheet, Text, View ,SafeAreaView,Image,Pressable} from 'react-nativ
 import React from 'react'
 import { AuthContext } from '../../AuthContext'
 import { useContext } from 'react'
-import AntDesign
-from 'react-native-vector-icons/AntDesign'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons
 from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation, useRoute } from '@react-navigation/native'

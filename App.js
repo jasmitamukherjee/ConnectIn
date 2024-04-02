@@ -23,17 +23,13 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
-import Fontisto from 'react-native-vector-icons/Fontisto'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import StackNavigator from './navigation/StackNavigator';
 import { AuthProvider } from './AuthContext';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+ 
   return (
     <AuthProvider>
     <>

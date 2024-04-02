@@ -7,9 +7,9 @@ import { getRegistrationProgress } from '../../registrationUtils'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 const EmployerPrefinal = () => {
-  useEffect(() => {
-    console.log(employerData) // Place the console.log here
-  }, [employerData])
+  // useEffect(() => {
+  //   console.log(employerData) // Place the console.log here
+  // }, [employerData])
   const {token,setToken}= useContext(AuthContext)
   useEffect(()=>{
     if(token){
@@ -20,7 +20,7 @@ const EmployerPrefinal = () => {
 const navigation =useNavigation()
 useEffect(()=>{
 getAllEmployerData()
-})
+},[])
   const [employerData,setEmployerData]= useState()
   const getAllEmployerData=async ()=>{
 
@@ -63,20 +63,58 @@ setEmployerData(employerData)
     }
 
   }
+  
+  const clearAllData= async ()=>{
+    try {
+      const screens = [
+        'UserType',
+        'Name',
+        'Email',
+        'Password',
+       
+        
+        'Gender',
+        'Location',
+       
+       
+        'EmployeePreference',
+        'CompanyOffers',
+  
+       
+        'CompanyPhotos',
+      
+  
+        'Prompts',
+        'ShowEmployerPrompts'
+      ];
+      for (const screenName of screens) {
+        const key = `registration_progress_${screenName}`;
+        await AsyncStorage.removeItem(key);
+      }
+      console.log('All screen data cleared successfully');
+      
+    } catch (error) {
+      console.log("Error",error)
+      
+    }
+
+  }
 const registerEmployer= async ()=>{
   try {
-    const response = await axios.post("http://localhost:5000/registerEmployer").then((response)=>{
+    const response = await axios.post("http://192.168.1.4:5000/registerEmployer",employerData).then((response)=>{
       console.log(response)
       const token = response.data.token;
       AsyncStorage.setItem("token",token)
       setToken(token)
     })
-    
+
+    clearAllData();
   } catch (error) 
   {
    console.log("Error",error) 
   }
 }
+console.log(employerData)
   return (
     <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
      <View style={{marginTop:90}}>
