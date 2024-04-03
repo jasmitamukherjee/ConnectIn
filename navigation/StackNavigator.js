@@ -39,6 +39,7 @@ import EmployerChat from '../screens/Profile/Employer/EmployerChat'
 import EmployerProfile from '../screens/Profile/Employer/EmployerProfile'
 import SendLikeEmployer from '../screens/Profile/Employer/SendLikeEmployer';
 import NothingToDisplay from '../screens/NothingToDisplay';
+import LoginScreen from '../screens/LoginScreen';
 const StackNavigator = () => {
   const {isLoading, token,userType,updateUserType} = useContext(AuthContext);
   // Ensure token is properly initialized
@@ -194,6 +195,8 @@ const AuthStack=()=>{
     return(
         <Stack.Navigator>
             {/* common */}
+            <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
+
             <Stack.Screen name="Basic" component={BasicInfo} options={{headerShown:false}}/>
             <Stack.Screen name="UserType" component={UserType} options={{headerShown:false}}/>
             <Stack.Screen name="Prompts" component={Prompts} options={{headerShown:false}}/>
