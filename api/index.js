@@ -276,3 +276,108 @@ app.get('/employers/:employerId', async (req, res) => {
       res.status(500).json({message: 'Internal server error'});
     }
   });
+
+
+  //profile liking EMPLOYER 
+
+  app.post('/like-profile-employer', async (req, res) => {
+    try {
+      const { likedEmployeeId, image, comment,employerId} = req.body;
+      // Update the liked employee's receivedLikes array
+      try {
+        await Employee.findByIdAndUpdate(likedEmployeeId, {
+          $push: {
+            receivedLikes: {
+              employerId: employerId,
+              image: image,
+              comment: comment,
+            },
+          },
+        });
+
+
+        
+      } catch (error) {
+        console.log("Error pushing into employee db")
+        
+      }
+     
+      // Update the employer's likedProfiles array
+      try {
+        await Employer.findByIdAndUpdate(employerId, {
+          $push: {
+            likedProfiles: likedEmployeeId,
+          },
+        });
+
+      } catch (error) {
+        console.log("error updsting employers likedprofile array")
+        
+      }
+      
+  
+      res.status(200).json({message: 'Profile liked successfully from employer side'});
+    } catch (error) {
+      console.error('Error liking profile from employer side:', error);
+      res.status(500).json({message: 'Internal server error'});
+    }
+  });
+  
+  app.get('/received-likes/:employerId', async (req, res) => {
+    try {
+      const {employerId} = req.params;
+  
+      const likes = await Employer.findById(employerId)
+        .populate('receivedLikes.employerId', 'firstName imageUrls prompts')
+        .select('receivedLikes');
+  
+      res.status(200).json({receivedLikes: likes.receivedLikes});
+    } catch (error) {
+      console.error('Error fetching received likes for the employee:', error);
+      res.status(500).json({message: 'Internal server error'});
+    }
+  });
+
+
+    //profile liking EMPLOYEE 
+    app.post('/like-profile-employee', async (req, res) => {
+      try {
+        const { likedEmployerId, image, comment,employeeId} = req.body;
+        // Update the liked employer's receivedLikes array
+        await Employer.findByIdAndUpdate(likedEmployerId, {
+          $push: {
+            receivedLikes: {
+              employerId: likedEmployerId,
+              image: image,
+              comment: comment,
+            },
+          },
+        });
+        // Update the employee's likedProfiles array
+        await Employee.findByIdAndUpdate(employeeId, {
+          $push: {
+            likedProfiles: likedEmployerId,
+          },
+        });
+    
+        res.status(200).json({message: 'Profile liked successfully from employee side'});
+      } catch (error) {
+        console.error('Error liking profile from employer side:', error);
+        res.status(500).json({message: 'Internal server error'});
+      }
+    });
+    
+    app.get('/received-likes/:employeeId', async (req, res) => {
+      try {
+        const {employeeId} = req.params;
+    
+        const likes = await Employee.findById(employeeId)
+          .populate('receivedLikes.employeeId', 'firstName imageUrls prompts')
+          .select('receivedLikes');
+    
+        res.status(200).json({receivedLikes: likes.receivedLikes});
+      } catch (error) {
+        console.error('Error fetching received likes for the employee:', error);
+        res.status(500).json({message: 'Internal server error'});
+      }
+    });

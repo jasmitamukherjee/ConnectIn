@@ -71,7 +71,7 @@ const employeeSchema = new Schema({
         {
           employerId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Employee',
+            ref: 'Employer',
             required: true,
           },
           image: {

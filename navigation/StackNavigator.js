@@ -37,6 +37,8 @@ import EmployerHome from '../screens/Profile/Employer/EmployerHome'
 import EmployerLikes from '../screens/Profile/Employer/EmployerLikes'
 import EmployerChat from '../screens/Profile/Employer/EmployerChat'
 import EmployerProfile from '../screens/Profile/Employer/EmployerProfile'
+import SendLikeEmployer from '../screens/Profile/Employer/SendLikeEmployer';
+import NothingToDisplay from '../screens/NothingToDisplay';
 const StackNavigator = () => {
   const {isLoading, token,userType,updateUserType} = useContext(AuthContext);
   // Ensure token is properly initialized
@@ -242,6 +244,9 @@ const AuthStack=()=>{
               ):(
                 <>
                 <Stack.Screen name="Main" component={BottomTabsEmployer} options={{headerShown:false}}/>
+                <Stack.Screen name="SendLikeEmployer" component={SendLikeEmployer} options={{headerShown:false}}/>
+                <Stack.Screen name="NothingToDisplay" component={NothingToDisplay} options={{headerShown:false}}/>
+
                 </>
               )}
 

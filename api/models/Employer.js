@@ -69,9 +69,9 @@ const employerSchema = new Schema({
       ],
       receivedLikes: [
         {
-          employerId: {
+          employeeId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Employer',
+            ref: 'Employee',
             required: true,
           },
           image: {

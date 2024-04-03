@@ -1,9 +1,8 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import { ScrollView } from 'react-native';
-// import 'core-js/stable/atob'
 import 'core-js/stable/atob';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -11,7 +10,9 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Foundation from 'react-native-vector-icons/Foundation'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 const EmployerHome = () => {
+  const navigation = useNavigation()
   const [option,setOption] = useState("Compatible")
   const [employerId,setEmployerId] = useState("");
   const [employersProfileData,setEmployersProfileData]= useState([])
@@ -31,7 +32,7 @@ const EmployerHome = () => {
     const token = await AsyncStorage.getItem("token");
     console.log("Employer token :",token)
   }
-  console.log("Employer ID : ",employerId)
+  // console.log("Employer ID : ",employerId)
   const [currentEmployerProfileIndex,setCurrentEmployerProfileIndex]= useState(0)
   const [currentEmployerProfile,setCurrentEmployerProfile]= useState(employersProfileData[0])
   const fetchEmployerMatches = async ()=>{
@@ -53,12 +54,54 @@ const EmployerHome = () => {
   },[employerId])
   useEffect(()=>{
     if(employersProfileData.length>0){
-      setCurrentEmployerProfile(employersProfileData[0])
+      setCurrentEmployerProfile(employersProfileData[currentEmployerProfileIndex])
+      // console.log(currentEmployerProfileIndex)
     }
   },[employersProfileData])
 
-  console.log("Profiles:",currentEmployerProfile)
+  
+  useFocusEffect(
+    useCallback(() => {
+      console.log('i call');
+      if (employerId) {
+       fetchEmployerMatches()
+      }
+    }, [employerId]),
+  );
+  
+  
+  const handleCross = () => {
+    
+    // For now, just moving to the next profile
+    navigateToNextProfile();
+  };
 
+  const navigateToNextProfile = () => {
+    const nextIndex = currentEmployerProfileIndex + 1;
+    if (nextIndex < employersProfileData.length) {
+      setCurrentEmployerProfileIndex(nextIndex);
+      // setCurrentEmployerProfile(employersProfileData[nextIndex]);
+      // navigation.navigate('Animation');
+    } else {
+      // No more profiles to display
+      console.log('No more profiles');
+      navigation.navigate("NothingToDisplay")
+    }
+  };
+  
+  
+  const handleLike = useCallback(() => {
+    navigateToNextProfile();
+  }, [currentEmployerProfileIndex]);
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     handleLike(); // Call handleLike when screen receives focus
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation, handleLike]);
+
+  
   return (
     <>
     <ScrollView style={{marginTop:25}}>
@@ -143,6 +186,16 @@ const EmployerHome = () => {
             <View>
               <Image source={{uri:currentEmployerProfile.imageUrls[0]}} style={{width:"100%",height:350,resizeMode:"cover",borderRadius:10}}/>
               <Pressable 
+                onPress={() =>
+                  navigation.navigate('SendLikeEmployer', {
+                    image: currentEmployerProfile?.imageUrls[0],
+                    name: currentEmployerProfile?.firstName,
+                    employerId: employerId,
+                   
+                    likedEmployeeId: currentEmployerProfile?._id,
+                    
+                  })
+                }
               style={{position:"absolute",bottom:10,right:10,backgroundColor:"white",width:42,height:42,borderRadius:21,justifyContent:"center",alignItems:"center"}}>
               <Foundation name="like" size={30} color="#452c63"/>
 
@@ -420,7 +473,7 @@ const EmployerHome = () => {
 
   </View>
       </ScrollView>
-      <Pressable style={{position:"absolute",bottom:15,left:12,backgroundColor:"white",width:50,height:50,borderRadius:25,justifyContent:"center",alignItems:"center"}}>
+      <Pressable onPress={handleCross}  style={{position:"absolute",bottom:15,left:12,backgroundColor:"white",width:50,height:50,borderRadius:25,justifyContent:"center",alignItems:"center"}}>
       <Entypo name="cross" size={30} color="#452c63"/>
 
       </Pressable>
