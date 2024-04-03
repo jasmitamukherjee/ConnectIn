@@ -328,12 +328,12 @@ app.get('/employers/:employerId', async (req, res) => {
       const {employerId} = req.params;
   
       const likes = await Employer.findById(employerId)
-        .populate('receivedLikes.employerId', 'firstName imageUrls prompts')
+        .populate('receivedLikes.employeeId', 'firstName imageUrls prompts')
         .select('receivedLikes');
   
       res.status(200).json({receivedLikes: likes.receivedLikes});
     } catch (error) {
-      console.error('Error fetching received likes for the employee:', error);
+      console.error('Error fetching received likes for the employer:', error);
       res.status(500).json({message: 'Internal server error'});
     }
   });

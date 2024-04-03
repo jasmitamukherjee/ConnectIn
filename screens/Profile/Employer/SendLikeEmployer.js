@@ -7,6 +7,7 @@ const SendLikeEmployer = () => {
   const [comment,setComment] = useState("")
   const navigation = useNavigation()
     const route= useRoute()
+    const { onReturnFromLike } = route?.params;
     const likeProfile = async ()=>{
       
         try {
@@ -20,6 +21,7 @@ const SendLikeEmployer = () => {
           if (response.status == 200) {
           
             navigation.goBack();
+            onReturnFromLike()
           }
           // Handle success: Update UI, show notifications, etc.
 

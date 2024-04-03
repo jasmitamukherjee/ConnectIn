@@ -90,9 +90,9 @@ const EmployerHome = () => {
   };
   
   
-  const handleLike = useCallback(() => {
+  const handleLike = () => {
     navigateToNextProfile();
-  }, [currentEmployerProfileIndex]);
+  }
   // useEffect(() => {
   //   const unsubscribe = navigation.addListener('focus', () => {
   //     handleLike(); // Call handleLike when screen receives focus
@@ -193,6 +193,7 @@ const EmployerHome = () => {
                     employerId: employerId,
                    
                     likedEmployeeId: currentEmployerProfile?._id,
+                    onReturnFromLike: handleLike
                     
                   })
                 }
