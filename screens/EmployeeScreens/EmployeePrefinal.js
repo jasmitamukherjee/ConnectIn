@@ -13,7 +13,7 @@ const EmployeePrefinal= () => {
   const {token,setToken} = useContext(AuthContext)
   useEffect(()=>{
     if(token){
-      navigation.replace("MainStack",{screen:"Main"})
+      navigation.replace("MainStack",{screen:"MainE"})
     
     }
   },[token])
@@ -22,7 +22,7 @@ const EmployeePrefinal= () => {
   },[])
   const registerEmployee= async ()=>{
     try {
-      const response = await axios.post("http://192.168.1.4:5000/registerEmployee",employeeData).then((response)=>{
+      const response = await axios.post("http://192.168.1.5:5000/registerEmployee",employeeData).then((response)=>{
         console.log(response)
         const token = response.data.token;
         AsyncStorage.setItem("token",token)

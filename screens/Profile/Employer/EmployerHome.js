@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import { ScrollView } from 'react-native';
@@ -11,14 +11,16 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../../AuthContext';
 const EmployerHome = () => {
   const navigation = useNavigation()
   const [option,setOption] = useState("Compatible")
   const [employerId,setEmployerId] = useState("");
   const [employersProfileData,setEmployersProfileData]= useState([])
+  const {loginOption} = useContext(AuthContext)
   useEffect(()=>{
     const fetchEmployer = async ()=>{
-      const token = await AsyncStorage.getItem("token")
+      const token = await AsyncStorage.setItem("token")
       const decodedToken = jwtDecode(token);
       const employerId= decodedToken.employerId;
       setEmployerId(employerId)
@@ -31,13 +33,14 @@ const EmployerHome = () => {
   const showToken = async () =>{
     const token = await AsyncStorage.getItem("token");
     console.log("Employer token :",token)
+    // console.log("option selected was",loginOption)
   }
   // console.log("Employer ID : ",employerId)
   const [currentEmployerProfileIndex,setCurrentEmployerProfileIndex]= useState(0)
   const [currentEmployerProfile,setCurrentEmployerProfile]= useState(employersProfileData[0])
   const fetchEmployerMatches = async ()=>{
     try {
-      const response = await axios.get(`http://192.168.1.4:5000/matchesEmployer?employerId=${employerId}`);
+      const response = await axios.get(`http://192.168.1.5:5000/matchesEmployer?employerId=${employerId}`);
       const matches = response.data.matches;
       setEmployersProfileData(matches)
       
@@ -68,8 +71,7 @@ const EmployerHome = () => {
       }
     }, [employerId]),
   );
-  
-  
+ 
   const handleCross = () => {
     
     // For now, just moving to the next profile
@@ -80,7 +82,7 @@ const EmployerHome = () => {
     const nextIndex = currentEmployerProfileIndex + 1;
     if (nextIndex < employersProfileData.length) {
       setCurrentEmployerProfileIndex(nextIndex);
-      // setCurrentEmployerProfile(employersProfileData[nextIndex]);
+      setCurrentEmployerProfile(employersProfileData[nextIndex]);
       // navigation.navigate('Animation');
     } else {
       // No more profiles to display
@@ -212,12 +214,12 @@ const EmployerHome = () => {
         <>
         <View style={{backgroundColor:"white",padding:12,borderRadius:10,height:150,justifyContent:"center"}}  key={index}>
           <Text style={{color:"black",fontSize:15,fontWeight:"500",fontFamily:"monospace"}}>
-            {prompt.question}
+            {prompt?.question}
 
 
           </Text>
         <Text style={{color:"black",fontSize:20,fontWeight:"600",fontFamily:"monospace",marginTop:20}}>
-          {prompt.answer}
+          {prompt?.answer}
 
         </Text>
         </View>
@@ -425,7 +427,7 @@ const EmployerHome = () => {
     <View style={{marginVertical:15}}>
       {currentEmployerProfile?.prompts?.length > 0 && 
       (   currentEmployerProfile?.prompts.slice(2,3).map((prompt,index) => {
-        <>
+        <React.Fragment key={index}>
         <View style={{backgroundColor:"white",padding:12,borderRadius:10,height:150,justifyContent:"center"}}  key={index}>
           <Text style={{color:"black",fontSize:15,fontWeight:"500",fontFamily:"monospace"}}>
             {prompt.question}
@@ -446,7 +448,7 @@ const EmployerHome = () => {
               <Foundation name="like" size={30} color="#452c63"/>
 
               </Pressable>
-        </>
+        </React.Fragment>
       }))
     }
 

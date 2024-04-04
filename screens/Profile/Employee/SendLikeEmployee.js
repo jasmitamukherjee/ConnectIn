@@ -3,7 +3,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import React, { useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import axios from 'axios'
-const SendLikeEmployer = () => {
+const SendLikeEmployee = () => {
   const [comment,setComment] = useState("")
   const navigation = useNavigation()
     const route= useRoute()
@@ -11,9 +11,9 @@ const SendLikeEmployer = () => {
     const likeProfile = async ()=>{
       
         try {
-          const response = await axios.post('http://192.168.1.5:5000/like-profile-employer', {
-           employerId: route.params.employerId,
-            likedEmployeeId: route.params.likedEmployeeId,
+          const response = await axios.post('http://192.168.1.4:5000/like-profile-employee', {
+           employeeId: route.params.employeeId,
+            likedEmployerId: route.params.likedEmployerId,
             image: route?.params?.image,
             comment: comment,
           });
@@ -86,6 +86,6 @@ const SendLikeEmployer = () => {
   )
 }
 
-export default SendLikeEmployer
+export default SendLikeEmployee
 
 const styles = StyleSheet.create({})

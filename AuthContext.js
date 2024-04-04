@@ -12,6 +12,7 @@ const isLoggedIn = async () => {
     const userToken = await AsyncStorage.getItem('token');
     setToken(userToken);
     setIsLoading(false);
+    
   } catch (error) {
     console.log('error', error);
   }
@@ -22,15 +23,8 @@ const isLoggedIn = async () => {
   useEffect(() => {
     isLoggedIn()
 },[token]);
-// useEffect(() => {
-//   // Check if token is set and trigger navigation accordingly
-//   if (token) {
-//     // Perform navigation or any other action
-//     console.log('Token set, performing navigation...');
-//   }
-// }, [token]);
-  return (
-    <AuthContext.Provider value={{ userType, updateUserType,token,isLoading,setToken }}>
+return (
+    <AuthContext.Provider value={{ userType,updateUserType,token,isLoading,setToken }}>
       {children}
     </AuthContext.Provider>
   );

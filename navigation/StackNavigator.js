@@ -40,6 +40,7 @@ import EmployerProfile from '../screens/Profile/Employer/EmployerProfile'
 import SendLikeEmployer from '../screens/Profile/Employer/SendLikeEmployer';
 import NothingToDisplay from '../screens/NothingToDisplay';
 import LoginScreen from '../screens/LoginScreen';
+import SendLikeEmployee from '../screens/Profile/Employee/SendLikeEmployee';
 const StackNavigator = () => {
   const {isLoading, token,userType,updateUserType} = useContext(AuthContext);
   // Ensure token is properly initialized
@@ -241,7 +242,10 @@ const AuthStack=()=>{
             <Stack.Navigator>
               {userType === 'employee' ? (
                 <>
-                                <Stack.Screen name="Main" component={BottomTabsEmployee} options={{headerShown:false}}/>
+                                <Stack.Screen name="MainE" component={BottomTabsEmployee} options={{headerShown:false}}/>
+                                <Stack.Screen name="SendLikeEmployee" component={SendLikeEmployee} options={{headerShown:false}}/>
+                <Stack.Screen name="NothingToDisplay" component={NothingToDisplay} options={{headerShown:false}}/>
+
 
                                 </>
               ):(

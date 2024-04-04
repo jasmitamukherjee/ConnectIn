@@ -11,18 +11,36 @@ import { useNavigation } from '@react-navigation/native'
 const LoginScreen = () => {
     const [employerEmail,setEmployerEmail] = useState("")
     const [employeeEmail,setEmployeeEmail] = useState("")
-    const {token,setToken,isLoading} = useContext(AuthContext)
+    const {token,setToken,isLoading,} = useContext(AuthContext)
     const [employeePassword,setEmployeePassword] = useState("")
     const [employerPassword,setEmployerPassword] = useState("")
     const navigation=useNavigation()
     const [option,setOption] =useState("Create Account")
-    useEffect(()=>{
-        if(token){
-            navigation.replace("MainStack",{screen:"Main"})
+    const {updateUserType} = useContext(AuthContext)
+    // useEffect(()=>{
+    //     if(token){
+    //         navigation.replace("MainStack",{screen:"Main"})
+    //     }
+    // },[token,navigation])
+    useEffect(() => {
+
+      if (token && userType) {
+        // console.log("option",option)
+        // if (option === "Sign In As Employee")
+          // Navigate to appropriate screen based on the signed-in user's role
+          if(userType =='employee')
+           {
+            // updateLoginOption(option)
+            navigation.navigate("MainE")
+          } else if (userType == 'employer') {
+          //  updateLoginOption(option)
+          navigation.navigate("Main")
         }
-    },[token,navigation])
+      }
+  }, [token, option, navigation])
   const signInEmployer= async ()=>{
     setOption("Sign In As Employer");
+    // updateLoginOption(option)
     try {
 
         const employer= {
@@ -30,11 +48,14 @@ const LoginScreen = () => {
             password: employerPassword
         };
 
-        const response = await axios.post("http://192.168.1.4:5000/loginEmployer",employer);
+        const response = await axios.post("http://192.168.1.5:5000/loginEmployer",employer);
         console.log(response);
         const token = response.data.token;
         await AsyncStorage.setItem("token",token)
         setToken(token)
+        const userType = 'employer'; // Assuming this is how you determine the user type
+        await AsyncStorage.setItem('userType', userType);
+        updateUserType(userType);
     } catch (error) {
         console.log("Error",error)
         
@@ -43,6 +64,8 @@ const LoginScreen = () => {
 
   const signInEmployee= async ()=>{
     setOption("Sign In As Employee");
+    // updateLoginOption(option)
+   
     try {
 
         const employee= {
@@ -50,11 +73,14 @@ const LoginScreen = () => {
             password: employeePassword
         };
 
-        const response = await axios.post("http://192.168.1.4:5000/loginEmployee",employee);
+        const response = await axios.post("http://192.168.1.5:5000/loginEmployee",employee);
         console.log(response);
         const token = response.data.token;
         await AsyncStorage.setItem("token",token)
         setToken(token)
+        const userType = 'employee'; // Assuming this is how you determine the user type
+        await AsyncStorage.setItem('userType', userType);
+        updateUserType(userType);
     } catch (error) {
         console.log("Error",error)
         

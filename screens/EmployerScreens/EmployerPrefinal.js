@@ -101,7 +101,7 @@ setEmployerData(employerData)
   }
 const registerEmployer= async ()=>{
   try {
-    const response = await axios.post("http://192.168.1.4:5000/registerEmployer",employerData).then((response)=>{
+    const response = await axios.post("http://192.168.1.5:5000/registerEmployer",employerData).then((response)=>{
       console.log(response)
       const token = response.data.token;
       AsyncStorage.setItem("token",token)

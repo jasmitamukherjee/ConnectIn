@@ -175,11 +175,11 @@ app.get('/employers/:employerId', async (req, res) => {
   
       let filter = {}; // Initialize filter as an empty object
   
-      if (employee.gender === 'Men') {
-        filter.gender = 'Women';
-      } else if (employee.gender === 'Women') {
-        filter.gender = 'Men';
-      }
+      // if (employee.gender === 'Men') {
+      //   filter.gender = 'Women';
+      // } else if (employee.gender === 'Women') {
+      //   filter.gender = 'Men';
+      // }
   
       // Construct query based on dating preferences and type
       let query = {
@@ -190,7 +190,7 @@ app.get('/employers/:employerId', async (req, res) => {
       //   filter.datingPreferences = user.datingPreferences;
       // }
       if (employee.userType) {
-        filter.userType = employee.userType; // Assuming user.type is a single value
+        filter.userType = "employer"; // Assuming user.type is a single value
       }
   
       const currentEmployee = await Employee.findById(employeeId)
@@ -203,10 +203,10 @@ app.get('/employers/:employerId', async (req, res) => {
       // Extract IDs of crushes
       const crushIds = currentEmployee.likedProfiles.map(crush => crush._id);
   
-      console.log('Filter', filter);
+      // console.log('Filter', filter);
   
       // Fetch matches based on query
-      const matches = await Employee.find(filter)
+      const matches = await Employer.find(filter)
         .where('_id')
         .nin([employeeId, ...friendIds, ...crushIds]);
   
@@ -372,7 +372,7 @@ app.get('/employers/:employerId', async (req, res) => {
         const {employeeId} = req.params;
     
         const likes = await Employee.findById(employeeId)
-          .populate('receivedLikes.employeeId', 'firstName imageUrls prompts')
+          .populate('receivedLikes.employerId', 'firstName imageUrls prompts')
           .select('receivedLikes');
     
         res.status(200).json({receivedLikes: likes.receivedLikes});
